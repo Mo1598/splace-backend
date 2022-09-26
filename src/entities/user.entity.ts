@@ -1,16 +1,28 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  firstName: string;
+  @Column ({nullable:false})
+  username:string;
 
-  @Column({ })
-  lastName: string;
+  @Column({ length: 64,nullable:false, unique:true})
+  email:string;
 
-  @Column({ default: true })
-  isActive: boolean;
+  @Column ({nullable:false})
+  password:string;
+
+  @Column({nullable:false,unique:true})
+  phonenumber:string;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
+
+  @CreateDateColumn()
+  createdAt: Date;
+  
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

@@ -21,14 +21,18 @@ export class UsersService {
   save(user){
     const newUser = this.usersRepository.create(
       {
-        firstName: user.firstName,
-        lastName: user.lastName
+        username: user.username,
+        email: user.email,
+        password: user.password,
+        phonenumber: user.phonenumber
       }
       );
     return this.usersRepository.save(newUser);
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: string) {
     await this.usersRepository.delete(id);
+
+    return 'Successfull Delete';
   }
 }

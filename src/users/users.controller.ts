@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiTags } from "@nestjs/swagger";
 import { CreateUser } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
@@ -24,8 +24,12 @@ export class UsersController
 
     @Post('/save')
     async save(@Body() user : CreateUser){
-        console.log(user);
         const response = await this.userService.save(user);
+    }
+
+    @Delete(':id')
+    remove(@Param('id') id: string) {
+        return this.userService.remove(id);
     }
 
 }

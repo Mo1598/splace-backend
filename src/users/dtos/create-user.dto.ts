@@ -1,14 +1,24 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsAlphanumeric, IsNotEmpty, IsString } from "class-validator";
+import { IsAlphanumeric, IsEmail, IsNotEmpty, IsString, Length, Matches } from "class-validator";
 
 export class CreateUser{
     @IsNotEmpty({message: 'Business name is required'})
     @IsString()
     @ApiProperty()
-    firstName: string;
+    username: string;
 
-    @IsNotEmpty({message: 'Business name is required'})
-    @IsString()
+    @IsNotEmpty({message: 'Email is required'})
+    @IsEmail()
     @ApiProperty()
-    lastName: string;
+    email: string;
+
+    @IsNotEmpty({message: 'Password is required'})
+    @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {message: "Weak password"})
+    @ApiProperty()
+    password: string;
+
+    @IsNotEmpty({message: 'Phone number is required'})
+    @Length(10,14)
+    @ApiProperty()
+    phonenumber: string;
 }
