@@ -8,12 +8,12 @@ WORKDIR /usr/splace/src
 
 COPY package*.json ./
 
-RUN npm install -g typeorm
-
 RUN npm install -g @nestjs/cli
 
 RUN npm install --only=development
 
 COPY . .
+
+EXPOSE 3000
 
 RUN npm run build

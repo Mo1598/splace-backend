@@ -4,7 +4,9 @@ import { AppModule } from './app.module';
 require('dotenv').config();
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: ['error', 'warn', 'log']
+  });
   const config = new DocumentBuilder()
   .setTitle('SPlace Backend')
   .setDescription('The SPlace API description')

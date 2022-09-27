@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, InternalServerErrorException, Logger, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entities/user.entity';
-import { Repository } from 'typeorm';
+import { EntityNotFoundError, Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
@@ -10,12 +10,34 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  findAll(): Promise<User[]> {
+  findAll() {
     return this.usersRepository.find();
   }
 
-  findOne(id: number): Promise<User> {
-    return this.usersRepository.findOneBy({ id });
+  findOne(id: string) {    
+    var response = this.usersRepository.findOneByOrFail({id: id})
+        .catch(error=>{
+          Logger.log(error);
+          throw new ForbiddenException({error: "User not found"});
+        });
+    return response;
+  }
+
+  async signIn(email: string) {
+    const user: User = await this.usersRepository.createQueryBuilder('user')
+    .select(['user.phonenumber', 'user.id', 'user.username', 'user.password'])
+    .where('email=:mail',{mail: email})
+    .getOneOrFail()
+    .catch((error) => {
+        Logger.warn(error)
+      if (error instanceof EntityNotFoundError) {
+          throw new UnauthorizedException({
+            error: 'Incorrect email or password',
+          });
+        }
+      throw new InternalServerErrorException({error: 'An error occured while processing your request'})
+    });
+    return user;
   }
 
   save(user){
@@ -31,8 +53,8 @@ export class UsersService {
   }
 
   async remove(id: string) {
+    await this.findOne(id);
     await this.usersRepository.delete(id);
-
     return 'Successfull Delete';
   }
 }
