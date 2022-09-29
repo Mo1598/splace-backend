@@ -62,3 +62,14 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: moseh/splace-backend:v1.0
+          
+  artifacts-upload:
+    runs-on: ubuntu-latest
+    
+    steps: 
+      - uses: actions/checkout@v2
+      - uses: actions/upload-artifact@v2
+        with:
+          name: splace-backend
+          path: .
+      
