@@ -61,4 +61,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: moseh/splace_backend:v1.0
+          tags: moseh/splace-backend:v1.0
