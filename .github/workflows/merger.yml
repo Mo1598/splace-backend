@@ -64,6 +64,9 @@ jobs:
           tags: moseh/splace-backend:v1.0
           
   artifacts-upload:
+  
+    needs: [build]
+  
     runs-on: ubuntu-latest
     
     steps: 
