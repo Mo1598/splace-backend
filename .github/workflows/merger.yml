@@ -61,4 +61,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/splace-backend:latest .
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/splace_backend:latest
