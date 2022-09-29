@@ -49,7 +49,8 @@ export class UsersService {
         phonenumber: user.phonenumber
       }
       );
-    return this.usersRepository.save(newUser);
+    var response = this.usersRepository.save(newUser);
+    return "User saved successfully";
   }
 
   async remove(id: string) {
