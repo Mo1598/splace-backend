@@ -18,8 +18,8 @@ export class User {
   @Column({nullable:false,unique:true})
   phonenumber:string;
 
-  @Column({type: 'enum', enum:Role, array: true, default: ['user']})
-  roles: Role[];
+  @Column({type: 'enum', enum:Role, default: Role.User})
+  roles: Role;
 
   @DeleteDateColumn()
   deletedAt: Date;
