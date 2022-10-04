@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm';
+import { Role } from 'src/enums/role.enum';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, UpdateDateColumn, JoinTable, ManyToMany } from 'typeorm';
 
 @Entity()
 export class User {
@@ -16,6 +17,9 @@ export class User {
 
   @Column({nullable:false,unique:true})
   phonenumber:string;
+
+  @Column({type: 'enum', enum:Role, array: true, default: ['user']})
+  roles: Role[];
 
   @DeleteDateColumn()
   deletedAt: Date;
