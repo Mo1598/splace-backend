@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable, InternalServerErrorException, Logger, U
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entities/user.entity';
 import { EntityNotFoundError, Repository } from 'typeorm';
+import { CreateUser } from './dtos/create-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -25,7 +26,7 @@ export class UsersService {
 
   async signIn(email: string) {
     const user: User = await this.usersRepository.createQueryBuilder('user')
-    .select(['user.phonenumber', 'user.id', 'user.username', 'user.password'])
+    .select(['user.phonenumber', 'user.id', 'user.username', 'user.password', 'user.roles'])
     .where('email=:mail',{mail: email})
     .getOneOrFail()
     .catch((error) => {
@@ -40,17 +41,17 @@ export class UsersService {
     return user;
   }
 
-  save(user){
+  async save(user: CreateUser){
     const newUser = this.usersRepository.create(
       {
         username: user.username,
         email: user.email,
         password: user.password,
-        phonenumber: user.phonenumber
+        phonenumber: user.phonenumber,
       }
       );
-    var response = this.usersRepository.save(newUser);
-    return "User saved successfully";
+    var response = await this.usersRepository.save(newUser);
+    return response.id;
   }
 
   async remove(id: string) {

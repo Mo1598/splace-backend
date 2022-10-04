@@ -1,6 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/enums/role.enum';
 import { CreateUser } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
 
@@ -13,6 +15,7 @@ export class UsersController
 
     @UseGuards(JwtAuthGuard)
     @Get()
+    @Roles(Role.User)
     async findAll() {
         var response = await this.userService.findAll();
         return response;
@@ -27,6 +30,7 @@ export class UsersController
 
     @UseGuards(JwtAuthGuard)
     @Post('/save')
+    @Roles(Role.Admin)
     async save(@Body() user : CreateUser){
         const response = await this.userService.save(user);
     }
