@@ -1,5 +1,6 @@
 import { Role } from 'src/enums/role.enum';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, UpdateDateColumn, JoinTable, ManyToMany } from 'typeorm';
+import { Roles } from './roles.entity';
 
 @Entity()
 export class User {
@@ -18,8 +19,14 @@ export class User {
   @Column({nullable:false,unique:true})
   phonenumber:string;
 
-  @Column({type: 'enum', enum:Role, default: Role.User})
-  roles: Role;
+  // @Column({type: 'enum', enum:Role, default: Role.User})
+  // roles: Role;
+
+  @ManyToMany(()=>Roles, {eager: true})
+    @JoinTable({
+        name: "user_roles",
+    })
+    roles: Roles[]
 
   @DeleteDateColumn()
   deletedAt: Date;
