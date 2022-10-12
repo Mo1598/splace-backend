@@ -34,7 +34,7 @@ export class UsersController
     @Post('/save')
     @Roles(Role.Admin)
     async save(@Body() user : CreateUser){
-        const response = await this.userService.save(user);
+        const response = await this.userService.save(user, "admin");
         return {"userId": response};
     }
 
